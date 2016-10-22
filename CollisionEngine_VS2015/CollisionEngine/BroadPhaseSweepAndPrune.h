@@ -12,6 +12,8 @@ class CBroadPhaseSweepAndPrune : public IBroadPhase
 public:
 	/// Calcul et remplie le vecteur des AABB avec la convertion des polygons en AABBS.
 	void CalculPolygonsAABB(std::vector<AABB>& AABBS);
+	
+	/// Tri les AABB des polygons par AABB.MinX.
 	void SortPolygonsAABB(std::vector<AABB>& AABBS);
 
 	/// Remplir les paires d'AABB qui collisionnent entre-elles.
@@ -20,10 +22,10 @@ public:
 		std::vector<AABB>& AABBS);
 	
 	/// Tri les paires d'AABB qui collisionnent entre-elles
-	void SortAABBCollisionallyPairs(std::vector<AABBPair>& pairsAABBToCheck);
+	//void SortAABBCollisionallyPairs(std::vector<AABBPair>& pairsAABBToCheck);
 
 	/// Supprime les paires doublons d'AABB qui collisionnent entre-elles.
-	void EraseDuplicateAABBCollisionallyPairs(std::vector<AABBPair>& pairsAABBToCheck);
+	//void EraseDuplicateAABBCollisionallyPairs(std::vector<AABBPair>& pairsAABBToCheck);
 
 	virtual void GetCollidingPairsToCheck(
 		std::vector<SPolygonPair>& pairsToCheck,

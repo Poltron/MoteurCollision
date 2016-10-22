@@ -25,10 +25,32 @@ bool AABB::Intersect(AABB& OtherAABB)
 			this->Intersect(OtherAABB.MaxX, OtherAABB.MaxY);
 }
 
+bool AABB::IntersectX(AABB& OtherAABB)
+{
+	return	this->IntersectPointX(OtherAABB.MinX) ||
+			this->IntersectPointX(OtherAABB.MaxX);
+}
+
+bool AABB::IntersectY(AABB& OtherAABB)
+{
+	return	this->IntersectPointY(OtherAABB.MinY) ||
+			this->IntersectPointY(OtherAABB.MaxY);
+}
+
 bool AABB::Intersect(float posX, float posY)
 {
+	return	this->IntersectPointX(posX) &&
+			this->IntersectPointY(posX);
+}
+
+bool AABB::IntersectPointX(float posX)
+{
 	return	posX >= this->MinX &&
-			posX <= this->MaxX &&
-			posY >= this->MinY &&
+			posX <= this->MaxX;
+}
+
+bool AABB::IntersectPointY(float posY)
+{
+	return	posY >= this->MinY &&
 			posY <= this->MaxY;
 }

@@ -43,9 +43,9 @@ struct AABB
 	}
 
 	/// Détermine si l'AABB courant est plus petit que l'AABB passé en paramètre.
-	inline bool operator<=(const AABB const& rightAABB)
+	inline bool operator<(const AABB const& rightAABB)
 	{
-		return this->MinX <= rightAABB.MinX;
+		return this->MinX < rightAABB.MinX;
 	}
 
 	/// Créé un AABB à partir d'un polygon.
@@ -53,8 +53,16 @@ struct AABB
 
 	/// Renvoit si l'AABB "OtherAABB" collisionne avec l'AABB courant.
 	bool Intersect(AABB& OtherAABB);
+	/// Renvoit si les composantes en X de l'AABB "OtherAABB" collisionne avec l'AABB courant.
+	bool IntersectX(AABB& OtherAABB);
+	/// Renvoit si les composantes en Y de l'AABB "OtherAABB" collisionne avec l'AABB courant.
+	bool IntersectY(AABB& OtherAABB);
 	/// Renvoit si le point à la position "posX" et "posY" collisionne avec l'AABB courant.
 	bool Intersect(float posX, float posY);
+	// Renvoit si la position x d'un point collisionne l'AABB courant.
+	bool IntersectPointX(float posX);
+	// Renvoit si la position y d'un point collisionne l'AABB courant.
+	bool IntersectPointY(float posY);
 };
 
 

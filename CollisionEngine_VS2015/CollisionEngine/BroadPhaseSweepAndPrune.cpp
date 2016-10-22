@@ -22,7 +22,7 @@ void CBroadPhaseSweepAndPrune::SortPolygonsAABB(std::vector<AABB>& AABBS)
 {
 	std::sort(AABBS.begin(), AABBS.end(), [](AABB leftAABB, AABB rightAABB)
 	{
-		return leftAABB <= rightAABB;
+		return leftAABB < rightAABB;
 	});
 }
 
@@ -35,32 +35,37 @@ void CBroadPhaseSweepAndPrune::FillAABBCollisionallyPairs(
 	{
 		for (auto&& RightAABB : AABBS)
 		{
-			if (LeftAABB.Intersect(RightAABB))
-				pairsAABBToCheck.push_back(AABBPair(&LeftAABB, &RightAABB));
+			if (LeftAABB.IntersectX(RightAABB))
+			{
+				if (LeftAABB.IntersectY(RightAABB))
+					pairsAABBToCheck.push_back(AABBPair(&LeftAABB, &RightAABB));
+			}
+			else
+				break;
 		}
 	}
 }
 
-void CBroadPhaseSweepAndPrune::SortAABBCollisionallyPairs(std::vector<AABBPair>& pairsAABBToCheck)
-{
-	std::sort(pairsAABBToCheck.begin(), pairsAABBToCheck.end(), less_AABB());
-}
+//void CBroadPhaseSweepAndPrune::SortAABBCollisionallyPairs(std::vector<AABBPair>& pairsAABBToCheck)
+//{
+//	std::sort(pairsAABBToCheck.begin(), pairsAABBToCheck.end(), less_AABB());
+//}
 
-void CBroadPhaseSweepAndPrune::EraseDuplicateAABBCollisionallyPairs(std::vector<AABBPair>& pairsAABBToCheck)
-{
-	for (auto&& LeftAABBPair : pairsAABBToCheck)
-	{
-		int index = 0;
-
-		for (auto&& RightAABBPair : pairsAABBToCheck)
-		{
-			if (LeftAABBPair == RightAABBPair)
-				pairsAABBToCheck.erase(pairsAABBToCheck.begin() + index);
-
-			index++;
-		}
-	}
-}
+//void CBroadPhaseSweepAndPrune::EraseDuplicateAABBCollisionallyPairs(std::vector<AABBPair>& pairsAABBToCheck)
+//{
+//	for (auto&& LeftAABBPair : pairsAABBToCheck)
+//	{
+//		int index = 0;
+//
+//		for (auto&& RightAABBPair : pairsAABBToCheck)
+//		{
+//			if (LeftAABBPair == RightAABBPair)
+//				pairsAABBToCheck.erase(pairsAABBToCheck.begin() + index);
+//
+//			index++;
+//		}
+//	}
+//}
 
 void CBroadPhaseSweepAndPrune::GetCollidingPairsToCheck(
 	std::vector<SPolygonPair>& pairsToCheck,
@@ -73,8 +78,8 @@ void CBroadPhaseSweepAndPrune::GetCollidingPairsToCheck(
 	this->SortPolygonsAABB(world->AABBS);
 
 	this->FillAABBCollisionallyPairs(pairsAABBToCheck, world->AABBS);
-	this->SortAABBCollisionallyPairs(pairsAABBToCheck);
-	this->EraseDuplicateAABBCollisionallyPairs(pairsAABBToCheck);
+	//this->SortAABBCollisionallyPairs(pairsAABBToCheck);
+	//this->EraseDuplicateAABBCollisionallyPairs(pairsAABBToCheck);
 
 	this->FillCollidingPairsToCheck(pairsToCheck, pairsAABBToCheck);
 	
