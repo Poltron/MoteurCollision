@@ -43,7 +43,7 @@ struct AABB
 	}
 
 	/// Détermine si l'AABB courant est plus petit que l'AABB passé en paramètre.
-	inline bool operator<(const AABB const& rightAABB)
+	inline bool operator<=(const AABB const& rightAABB)
 	{
 		return this->MinX <= rightAABB.MinX;
 	}

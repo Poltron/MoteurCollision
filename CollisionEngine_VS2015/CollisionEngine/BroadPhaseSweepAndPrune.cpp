@@ -18,6 +18,14 @@ void CBroadPhaseSweepAndPrune::CalculPolygonsAABB(std::vector<AABB>& AABBS)
 	}
 }
 
+void CBroadPhaseSweepAndPrune::SortPolygonsAABB(std::vector<AABB>& AABBS)
+{
+	std::sort(AABBS.begin(), AABBS.end(), [](AABB leftAABB, AABB rightAABB)
+	{
+		return leftAABB <= rightAABB;
+	});
+}
+
 void CBroadPhaseSweepAndPrune::FillAABBCollisionallyPairs(
 	std::vector<AABBPair>& pairsAABBToCheck, 
 	std::vector<AABB>& AABBS)
@@ -62,6 +70,7 @@ void CBroadPhaseSweepAndPrune::GetCollidingPairsToCheck(
 
 	world->AABBS.clear();
 	this->CalculPolygonsAABB(world->AABBS);
+	this->SortPolygonsAABB(world->AABBS);
 
 	this->FillAABBCollisionallyPairs(pairsAABBToCheck, world->AABBS);
 	this->SortAABBCollisionallyPairs(pairsAABBToCheck);

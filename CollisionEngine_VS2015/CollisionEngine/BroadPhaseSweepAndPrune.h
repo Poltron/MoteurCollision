@@ -12,6 +12,7 @@ class CBroadPhaseSweepAndPrune : public IBroadPhase
 public:
 	/// Calcul et remplie le vecteur des AABB avec la convertion des polygons en AABBS.
 	void CalculPolygonsAABB(std::vector<AABB>& AABBS);
+	void SortPolygonsAABB(std::vector<AABB>& AABBS);
 
 	/// Remplir les paires d'AABB qui collisionnent entre-elles.
 	void FillAABBCollisionallyPairs(
