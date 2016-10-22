@@ -16,17 +16,6 @@ public:
 	/// Tri les AABB des polygons par AABB.MinX.
 	void SortPolygonsAABB(std::vector<AABB>& AABBS);
 
-	/// Remplir les paires d'AABB qui collisionnent entre-elles.
-	void FillAABBCollisionallyPairs(
-		std::vector<AABBPair>& pairsAABBToCheck,
-		std::vector<AABB>& AABBS);
-	
-	/// Tri les paires d'AABB qui collisionnent entre-elles
-	//void SortAABBCollisionallyPairs(std::vector<AABBPair>& pairsAABBToCheck);
-
-	/// Supprime les paires doublons d'AABB qui collisionnent entre-elles.
-	//void EraseDuplicateAABBCollisionallyPairs(std::vector<AABBPair>& pairsAABBToCheck);
-
 	virtual void GetCollidingPairsToCheck(
 		std::vector<SPolygonPair>& pairsToCheck,
 		std::vector<AABBPair>& pairsAABBToCheck) override;
@@ -34,7 +23,19 @@ public:
 	/// Rempli les paires de polygones qui collisionenent entres eux avec les paires d'AABB qui collisionnent entre-eux.
 	void FillCollidingPairsToCheck(
 		std::vector<SPolygonPair>& pairsToCheck,
-		std::vector<AABBPair>& pairsAABBToCheck);
+		std::vector<AABB>& AABBS);
+
+	/// Remplir les paires d'AABB qui collisionnent entre-elles.
+	//void FillAABBCollisionallyPairs(
+	//	std::vector<AABBPair>& pairsAABBToCheck,
+	//	std::vector<AABB>& AABBS);
+
+	/// Mes anciens tests, je les laisse ici pour que vous puissiez visualiser ce que j'ai tenté de faire.
+	/// Tri les paires d'AABB qui collisionnent entre-elles
+	//void SortAABBCollisionallyPairs(std::vector<AABBPair>& pairsAABBToCheck);
+
+	/// Supprime les paires doublons d'AABB qui collisionnent entre-elles.
+	//void EraseDuplicateAABBCollisionallyPairs(std::vector<AABBPair>& pairsAABBToCheck);
 };
 
 #endif

@@ -9,35 +9,35 @@
 
 class IBroadPhase;
 
-struct AABBPair
-{
-	AABBPair(AABB* AABBLeft, AABB* AABBRight) : AABBLeft(AABBLeft), AABBRight(AABBRight) {}
+//struct AABBPair
+//{
+//	AABBPair(AABB* AABBLeft, AABB* AABBRight) : AABBLeft(AABBLeft), AABBRight(AABBRight) {}
+//
+//	inline bool operator<(const AABBPair const& rightAABBPair)
+//	{
+//		return AABBLeft < AABBRight;
+//	}
+//
+//	inline bool operator==(const AABBPair const& rightAABBPair)
+//	{
+//		return	(AABBLeft == rightAABBPair.AABBLeft &&
+//				AABBRight == rightAABBPair.AABBRight) ||
+//
+//				(AABBLeft == rightAABBPair.AABBRight &&
+//				AABBRight == rightAABBPair.AABBLeft);
+//	}
+//
+//	AABB*	AABBLeft;
+//	AABB*	AABBRight;
+//};
 
-	inline bool operator<(const AABBPair const& rightAABBPair)
-	{
-		return AABBLeft < AABBRight;
-	}
-
-	inline bool operator==(const AABBPair const& rightAABBPair)
-	{
-		return	(AABBLeft == rightAABBPair.AABBLeft &&
-				AABBRight == rightAABBPair.AABBRight) ||
-
-				(AABBLeft == rightAABBPair.AABBRight &&
-				AABBRight == rightAABBPair.AABBLeft);
-	}
-
-	AABB*	AABBLeft;
-	AABB*	AABBRight;
-};
-
-struct less_AABB
-{
-	inline bool operator() (const AABBPair& leftAABBPair, const AABBPair& rightAABBPair)
-	{
-		return (leftAABBPair.AABBLeft < rightAABBPair.AABBRight);
-	}
-};
+//struct less_AABB
+//{
+//	inline bool operator() (const AABBPair& leftAABBPair, const AABBPair& rightAABBPair)
+//	{
+//		return (leftAABBPair.AABBLeft < rightAABBPair.AABBRight);
+//	}
+//};
 
 struct SPolygonPair
 {
