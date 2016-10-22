@@ -90,7 +90,7 @@ private:
 	// Collision detection
 	IBroadPhase*				m_broadPhase;
 	std::vector<SPolygonPair>	m_pairsToCheck;
-	std::vector<AABBPair>		m_pairsAABBToCheck;
+	//std::vector<AABBPair>		m_pairsAABBToCheck;
 	std::vector<SCollision>		m_collidingPairs;
 };
 

@@ -59,9 +59,9 @@ void	CPhysicEngine::Step(float deltaTime)
 void	CPhysicEngine::CollisionBroadPhase()
 {
 	m_pairsToCheck.clear();
-	this->m_pairsAABBToCheck.clear();
+	//this->m_pairsAABBToCheck.clear();
 	
-	m_broadPhase->GetCollidingPairsToCheck(m_pairsToCheck, this->m_pairsAABBToCheck);
+	m_broadPhase->GetCollidingPairsToCheck(m_pairsToCheck);
 }
 
 void	CPhysicEngine::CollisionNarrowPhase()

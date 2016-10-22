@@ -10,9 +10,7 @@
 class CBroadPhaseBrut : public IBroadPhase
 {
 public:
-	virtual void GetCollidingPairsToCheck(
-		std::vector<SPolygonPair>& pairsToCheck,
-		std::vector<AABBPair>& pairsAABBToCheck) override
+	virtual void GetCollidingPairsToCheck(std::vector<SPolygonPair>& pairsToCheck) override
 	{
 		for (size_t i = 0; i < gVars->pWorld->GetPolygonCount(); ++i)
 		{

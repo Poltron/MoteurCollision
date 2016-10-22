@@ -16,9 +16,7 @@ public:
 	/// Tri les AABB des polygons par AABB.MinX.
 	void SortPolygonsAABB(std::vector<AABB>& AABBS);
 
-	virtual void GetCollidingPairsToCheck(
-		std::vector<SPolygonPair>& pairsToCheck,
-		std::vector<AABBPair>& pairsAABBToCheck) override;
+	virtual void GetCollidingPairsToCheck(std::vector<SPolygonPair>& pairsToCheck) override;
 
 	/// Rempli les paires de polygones qui collisionenent entres eux avec les paires d'AABB qui collisionnent entre-eux.
 	void FillCollidingPairsToCheck(

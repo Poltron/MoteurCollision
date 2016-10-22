@@ -26,9 +26,7 @@ void CBroadPhaseSweepAndPrune::SortPolygonsAABB(std::vector<AABB>& AABBS)
 	});
 }
 
-void CBroadPhaseSweepAndPrune::GetCollidingPairsToCheck(
-	std::vector<SPolygonPair>& pairsToCheck,
-	std::vector<AABBPair>& pairsAABBToCheck)
+void CBroadPhaseSweepAndPrune::GetCollidingPairsToCheck(std::vector<SPolygonPair>& pairsToCheck)
 {
 	auto world = gVars->pWorld;
 

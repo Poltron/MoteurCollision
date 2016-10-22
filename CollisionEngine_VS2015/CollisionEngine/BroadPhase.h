@@ -6,9 +6,7 @@
 class IBroadPhase
 {
 public:
-	virtual void GetCollidingPairsToCheck(
-			std::vector<SPolygonPair>& pairsToCheck,
-			std::vector<AABBPair>& pairsAABBToCheck) = 0;
+	virtual void GetCollidingPairsToCheck(std::vector<SPolygonPair>& pairsToCheck) = 0;
 };
 
 #endif
