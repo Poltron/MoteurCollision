@@ -1,0 +1,6 @@
+﻿  Polygon.cpp
+d:\etien_000\projets\c++\moteurphysique\collisionengine_vs2015\collisionengine\aabb.h(37): warning C4114: same type qualifier used more than once
+d:\etien_000\projets\c++\moteurphysique\collisionengine_vs2015\collisionengine\aabb.h(46): warning C4114: same type qualifier used more than once
+d:\etien_000\projets\c++\moteurphysique\collisionengine_vs2015\collisionengine\physicengine.h(16): warning C4114: same type qualifier used more than once
+d:\etien_000\projets\c++\moteurphysique\collisionengine_vs2015\collisionengine\physicengine.h(21): warning C4114: same type qualifier used more than once
+  CollisionEngine.vcxproj -> D:\etien_000\Projets\C++\MoteurPhysique\CollisionEngine_VS2015\Debug\CollisionEngine.exe

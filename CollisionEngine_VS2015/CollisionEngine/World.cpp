@@ -1,13 +1,15 @@
 #include "World.h"
 
 #include "Polygon.h"
+#include "GlobalVariables.h"
+#include "Renderer.h"
 
 CPolygonPtr		CWorld::AddTriangle(float base, float height)
 {
 	CPolygonPtr poly = AddPolygon();
 	poly->points.push_back({ -base * 0.5f, -height * 0.5f });
 	poly->points.push_back({ base * 0.5f, -height * 0.5f });
-	poly->points.push_back({ 0.0f, height * 0.5f });
+	poly->points.push_back({ 0.01f, height * 0.5f });
 	poly->Build();
 
 	return poly;
@@ -133,5 +135,6 @@ void	CWorld::RenderPolygons()
 	for (CPolygonPtr polygon : m_polygons)
 	{
 		polygon->Draw();
+		//gVars->pRenderer->DrawLine(Vec2(polygon->box.MinX, polygon->box.MinY), Vec2(polygon->box.MaxX, polygon->box.MinY), 0, 0, 0);
 	}
 }

@@ -17,9 +17,6 @@ private:
 public:
 	~CPolygon();
 
-	void ToAABB();
-
-	AABB				AABB;
 	Vec2				position;
 	Mat2				rotation;
 	std::vector<Vec2>	points;

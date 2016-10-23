@@ -18,8 +18,6 @@ struct SRandomPolyParams
 class CWorld
 {
 public:
-	std::vector<AABB>			AABBS;
-
 	CPolygonPtr		AddTriangle(float base, float height);
 	CPolygonPtr		AddRectangle(float width, float height);
 	CPolygonPtr		AddSquare(float size);

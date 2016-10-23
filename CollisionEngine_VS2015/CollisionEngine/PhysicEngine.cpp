@@ -9,7 +9,7 @@
 
 #include "BroadPhase.h"
 #include "BroadPhaseBrut.h"
-
+#include "BroadPhaseSweepAndPrune.h"
 
 void	CPhysicEngine::Reset()
 {
@@ -18,7 +18,7 @@ void	CPhysicEngine::Reset()
 
 	m_active = true;
 
-	m_broadPhase = new CBroadPhaseBrut();
+	m_broadPhase = new CBroadPhaseSweepAndPrune();
 }
 
 void	CPhysicEngine::Activate(bool active)
@@ -59,7 +59,6 @@ void	CPhysicEngine::Step(float deltaTime)
 void	CPhysicEngine::CollisionBroadPhase()
 {
 	m_pairsToCheck.clear();
-	//this->m_pairsAABBToCheck.clear();
 	
 	m_broadPhase->GetCollidingPairsToCheck(m_pairsToCheck);
 }

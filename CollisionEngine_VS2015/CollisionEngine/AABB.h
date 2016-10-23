@@ -5,64 +5,24 @@
 
 class CPolygon;
 
-struct AABB
+class AABB
 {
+public:
 	float MinX;
 	float MinY;
 	float MaxX;
 	float MaxY;
 
-	/// Cette donnée n'a strictement rien à faire ici mais elle me facilite la vie.
-	int polygonIndex;
-
-	/// Lorsqu'un AABB est créé, il faut s'assurer que ces bornes sont défini aux valeurs floatantes minimum et maximum.
-	/// Cela permet de s'assurer que les AABBS se remplissent correctement dans la méthode PolygonToAABB.
 	AABB() :
-		MinX(FLT_MIN),
-		MinY(FLT_MIN),
-		MaxX(FLT_MAX),
-		MaxY(FLT_MAX)
-	{
-	}
+		MinX(FLT_MAX), MinY(FLT_MAX), MaxX(FLT_MIN), MaxY(FLT_MIN)
+	{};
 
 	AABB(float minX, float minY, float maxX, float maxY) :
-		MinX(minX),
-		MinY(minY),
-		MaxX(maxX),
-		MaxY(maxY)
-	{
-	};
+		 MinX(minX), MinY(minY), MaxX(maxX), MaxY(maxY)
+	{};
 
-	/// Défini seulement si 2 AABBS sont égaux.
-	inline bool operator==(const AABB const& rightAABB)
-	{
-		return	this->MinX == rightAABB.MinX &&
-				this->MinY == rightAABB.MinY &&
-				this->MaxX == rightAABB.MaxX &&
-				this->MaxY == rightAABB.MaxY;
-	}
-
-	/// Détermine si l'AABB courant est plus petit que l'AABB passé en paramètre.
-	inline bool operator<(const AABB const& rightAABB)
-	{
-		return this->MinX < rightAABB.MinX;
-	}
-
-	/// Créé un AABB à partir d'un polygon.
-	void PolygonToAABB(CPolygon* polygon);
-
-	/// Renvoit si l'AABB "OtherAABB" collisionne avec l'AABB courant.
-	bool Intersect(AABB& OtherAABB);
-	/// Renvoit si les composantes en X de l'AABB "OtherAABB" collisionne avec l'AABB courant.
-	bool IntersectX(AABB& OtherAABB);
-	/// Renvoit si les composantes en Y de l'AABB "OtherAABB" collisionne avec l'AABB courant.
-	bool IntersectY(AABB& OtherAABB);
-	/// Renvoit si le point à la position "posX" et "posY" collisionne avec l'AABB courant.
-	bool Intersect(float posX, float posY);
-	// Renvoit si la position x d'un point collisionne l'AABB courant.
-	bool IntersectPointX(float posX);
-	// Renvoit si la position y d'un point collisionne l'AABB courant.
-	bool IntersectPointY(float posY);
+	bool isPotentiallyCollidingX(AABB);
+	bool isPotentiallyCollidingXY(AABB);
 };
 
 

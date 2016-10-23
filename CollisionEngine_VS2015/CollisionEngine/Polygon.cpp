@@ -71,8 +71,6 @@ bool	CPolygon::IsPointInside(const Vec2& point) const
 	return maxDist <= 0.0f;
 }
 
-
-
 CPolygon::Axis	CPolygon::GetAxis(const CPolygon& poly, const int& index) const
 {
 	Axis axis;
@@ -84,6 +82,7 @@ CPolygon::Axis	CPolygon::GetAxis(const CPolygon& poly, const int& index) const
 	Line globalLine = poly.m_lines[index].Transform(poly.rotation, poly.position);
 
 	Vec2 normal = globalLine.GetNormal();
+
 	axis.line = Line(globalLine.point, normal); // on crée l'axe actuel
 	axis.pointA = globalLine.point;
 	axis.pointB = poly.m_lines[previousIndex].Transform(poly.rotation, poly.position).point;
@@ -102,6 +101,7 @@ CPolygon::MinMaxPolygon	CPolygon::GetMinMaxOfPolygon(const CPolygon& poly, const
 		if (j < poly.points.size())
 		{
 			Vec2 proj = axis.Project(poly.TransformPoint(poly.points[j])); // projection du point sur l'axe
+			
 			float mult = (proj - axis.point) | axis.dir; // point_projete = mult * axis_vecteur_directeur;
 
 			mults.push_back(mult); // stock le resultat
@@ -115,7 +115,7 @@ CPolygon::MinMaxPolygon	CPolygon::GetMinMaxOfPolygon(const CPolygon& poly, const
 	Vec2 maximumPolyPoint = poly.points[0];
 
 	// on parcourt tous les résultats pour trouver le min et le max
-	for (int j = 1; j < mults.size(); ++j)
+	for (size_t j = 1; j < mults.size(); ++j)
 	{
 		float mult = mults[j];
 
@@ -167,7 +167,7 @@ CPolygon::MinimalPenetrationInfo	CPolygon::GetMinimalPenetrationInfo(const CPoly
 	return minimalPenetration;
 }
 
-bool	CPolygon::CheckCollision(const CPolygon& poly, Vec2& colPoint, Vec2& colNormal, float& colDist) const//, Vec2& axisA, Vec2& axisB, Vec2& min, Vec2& max) const
+bool	CPolygon::CheckCollision(const CPolygon& poly, Vec2& colPoint, Vec2& colNormal, float& colDist) const
 {
 	MinimalPenetrationInfo minimalPenetration;
 	minimalPenetration.distance = FLT_MAX;
@@ -227,11 +227,8 @@ bool	CPolygon::CheckCollision(const CPolygon& poly, Vec2& colPoint, Vec2& colNor
 	}
 
 	colDist = minimalPenetration.distance;
-	/*min = minimalPenetration.pointMin;
-	max = minimalPenetration.pointMax;
-	axisA = minimalPenetration.axis.pointA;
-	axisB = minimalPenetration.axis.pointB;*/
 
+	// on cherche le point de collision, celui qui n'est pas sur l'axe
 	if ((minimalPenetration.axis.pointA.x != minimalPenetration.pointMin.x || minimalPenetration.axis.pointA.y != minimalPenetration.pointMin.y) && (minimalPenetration.axis.pointB.x != minimalPenetration.pointMin.x || minimalPenetration.axis.pointB.y != minimalPenetration.pointMin.y))
 		colPoint = minimalPenetration.pointMin;
 	else
@@ -239,46 +236,14 @@ bool	CPolygon::CheckCollision(const CPolygon& poly, Vec2& colPoint, Vec2& colNor
 
 	colNormal = minimalPenetration.axis.line.dir;
 
+	// si l'axe par rapport à laquelle on a trouvé la péné minimale ne faisait parti de ce triangle,
+	// alors le point de collision est sur ce triangle, ce qu'on ne veut pas.
+	// alors on met le point de collision sur l'autre poly.
 	if (!minimalPenetration.axis.isOnThisPoly)
 	{
 		colPoint = colPoint + colNormal * colDist;
 		colNormal = Vec2(-colNormal.x, -colNormal.y);
 	}
-
-	/*
-		Vec2 collisionPointTmp;
-
-		Vec2 pointMin = (indexBestMin >= points.size()) ? poly.TransformPoint(poly.points[indexBestMin % points.size()]) : TransformPoint(points[indexBestMin]);
-		Vec2 pointMax = (indexBestMax >= points.size()) ? poly.TransformPoint(poly.points[indexBestMax % points.size()]) : TransformPoint(points[indexBestMax]);
-
-		Vec2 linePointA = poly.m_lines[bestAxis % m_lines.size()].Transform(poly.rotation, poly.position).point;
-		Line linePointBTmp = poly.m_lines[(bestAxis + m_lines.size() - 1) % (int)m_lines.size()];
-		Vec2 linePointB = linePointBTmp.Transform(poly.rotation, poly.position).point;
-		Vec2 notColPoint;
-
-		if ((linePointA.x != pointMin.x || linePointA.y != pointMin.y) && (linePointB.x != pointMin.x || linePointB.y != pointMin.y))
-		{
-			colPoint = pointMin;
-			notColPoint = pointMax;
-		}
-		else
-		{
-			colPoint = pointMax;
-			notColPoint = pointMin;
-		}
-
-		Vec2 projectedColPoint = poly.m_lines[bestAxis % m_lines.size()].Transform(poly.rotation, poly.position).Project(colPoint);
-		colDist = (projectedColPoint - colPoint).GetLength();
-		colPoint = projectedColPoint;
-
-		colNormal = poly.m_lines[bestAxis % m_lines.size()].Transform(rotation, position).GetNormal();
-		colNormal = Vec2(-colNormal.x, -colNormal.y);
-
-		min = pointMin;
-		max = pointMax;
-		axisA = linePointA;
-		axisB = linePointB;
-	*/
 
 	return true;
 }
@@ -337,10 +302,4 @@ void CPolygon::BuildLines()
 
 		m_lines.push_back(Line(pointB, lineDir));
 	}
-}
-
-
-void CPolygon::ToAABB()
-{
-	this->AABB.PolygonToAABB(this);
 }

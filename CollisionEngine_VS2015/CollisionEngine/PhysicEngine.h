@@ -9,36 +9,6 @@
 
 class IBroadPhase;
 
-//struct AABBPair
-//{
-//	AABBPair(AABB* AABBLeft, AABB* AABBRight) : AABBLeft(AABBLeft), AABBRight(AABBRight) {}
-//
-//	inline bool operator<(const AABBPair const& rightAABBPair)
-//	{
-//		return AABBLeft < AABBRight;
-//	}
-//
-//	inline bool operator==(const AABBPair const& rightAABBPair)
-//	{
-//		return	(AABBLeft == rightAABBPair.AABBLeft &&
-//				AABBRight == rightAABBPair.AABBRight) ||
-//
-//				(AABBLeft == rightAABBPair.AABBRight &&
-//				AABBRight == rightAABBPair.AABBLeft);
-//	}
-//
-//	AABB*	AABBLeft;
-//	AABB*	AABBRight;
-//};
-
-//struct less_AABB
-//{
-//	inline bool operator() (const AABBPair& leftAABBPair, const AABBPair& rightAABBPair)
-//	{
-//		return (leftAABBPair.AABBLeft < rightAABBPair.AABBRight);
-//	}
-//};
-
 struct SPolygonPair
 {
 	SPolygonPair(CPolygonPtr _polyA, CPolygonPtr _polyB) : polyA(_polyA), polyB(_polyB){}
@@ -90,7 +60,6 @@ private:
 	// Collision detection
 	IBroadPhase*				m_broadPhase;
 	std::vector<SPolygonPair>	m_pairsToCheck;
-	//std::vector<AABBPair>		m_pairsAABBToCheck;
 	std::vector<SCollision>		m_collidingPairs;
 };
 

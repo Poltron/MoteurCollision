@@ -4,98 +4,56 @@
 #include <algorithm>
 #include <functional>
 
-void CBroadPhaseSweepAndPrune::CalculPolygonsAABB(std::vector<AABB>& AABBS)
+void CBroadPhaseSweepAndPrune::GetCollidingPairsToCheck(
+	std::vector<SPolygonPair>& pairsToCheck)
 {
-	for (size_t x = 0; x < gVars->pWorld->GetPolygonCount(); ++x)
+	std::vector<AABB> boxes;
+	CWorld* world = gVars->pWorld;
+
+	for (size_t i = 0; i < world->GetPolygonCount(); ++i)
 	{
-		auto polygonPtr = gVars->pWorld->GetPolygon(x);
-
-		polygonPtr->ToAABB();
-
-		polygonPtr->AABB.polygonIndex = x;
-		
-		AABBS.push_back(polygonPtr->AABB);
+		AABB aabb = createBox(world->GetPolygon(i));
+		boxes.push_back(aabb);
 	}
-}
 
-void CBroadPhaseSweepAndPrune::SortPolygonsAABB(std::vector<AABB>& AABBS)
-{
-	std::sort(AABBS.begin(), AABBS.end(), [](AABB leftAABB, AABB rightAABB)
+	for (size_t i = 0; i < world->GetPolygonCount(); ++i)
 	{
-		return leftAABB < rightAABB;
-	});
-}
-
-void CBroadPhaseSweepAndPrune::GetCollidingPairsToCheck(std::vector<SPolygonPair>& pairsToCheck)
-{
-	auto world = gVars->pWorld;
-
-	world->AABBS.clear();
-	this->CalculPolygonsAABB(world->AABBS);
-	this->SortPolygonsAABB(world->AABBS);
-
-	//this->FillAABBCollisionallyPairs(pairsAABBToCheck, world->AABBS);
-	//this->SortAABBCollisionallyPairs(pairsAABBToCheck);
-	//this->EraseDuplicateAABBCollisionallyPairs(pairsAABBToCheck);
-
-	this->FillCollidingPairsToCheck(pairsToCheck, world->AABBS);
-	
-}
-
-void CBroadPhaseSweepAndPrune::FillCollidingPairsToCheck(
-	std::vector<SPolygonPair>& pairsToCheck,
-	std::vector<AABB>& AABBS)
-{
-	auto world = gVars->pWorld;
-	
-	for (auto&& LeftAABB : AABBS)
-	{
-		for (auto&& RightAABB : AABBS)
+		for (size_t j = i + 1; j < world->GetPolygonCount(); ++j)
 		{
-			if (LeftAABB.IntersectX(RightAABB))
-			{
-				if (LeftAABB.IntersectY(RightAABB))
-					pairsToCheck.push_back(SPolygonPair(
-						world->GetPolygon(LeftAABB.polygonIndex),
-						world->GetPolygon(RightAABB.polygonIndex)));
-			}
-			else
-				break;
+			if (boxes[i].isPotentiallyCollidingXY(boxes[j]))
+				pairsToCheck.push_back(SPolygonPair(gVars->pWorld->GetPolygon(i), gVars->pWorld->GetPolygon(j)));
 		}
 	}
+	
+	boxes.clear();
 }
 
-/// Mes anciens tests, je les laisse ici pour que vous puissiez visualiser ce que j'ai tenté de faire.
 
-//void CBroadPhaseSweepAndPrune::SortAABBCollisionallyPairs(std::vector<AABBPair>& pairsAABBToCheck)
-//{
-//	std::sort(pairsAABBToCheck.begin(), pairsAABBToCheck.end(), less_AABB());
-//}
+AABB CBroadPhaseSweepAndPrune::createBox(CPolygonPtr polygon)
+{
+	AABB aabb;
 
-//void CBroadPhaseSweepAndPrune::EraseDuplicateAABBCollisionallyPairs(std::vector<AABBPair>& pairsAABBToCheck)
-//{
-//	for (auto&& LeftAABBPair : pairsAABBToCheck)
-//	{
-//		int index = 0;
-//
-//		for (auto&& RightAABBPair : pairsAABBToCheck)
-//		{
-//			if (LeftAABBPair == RightAABBPair)
-//				pairsAABBToCheck.erase(pairsAABBToCheck.begin() + index);
-//
-//			index++;
-//		}
-//	}
-//}
+	Vec2 point = polygon->TransformPoint(polygon->points[0]);
 
-//void CBroadPhaseSweepAndPrune::FillCollidingPairsToCheck(
-//	std::vector<SPolygonPair>& pairsToCheck,
-//	std::vector<AABBPair>& pairsAABBToCheck)
-//{
-//	auto world = gVars->pWorld;
-//	
-//	for (auto&& pairAABB : pairsAABBToCheck)
-//		pairsToCheck.push_back(SPolygonPair(
-//			world->GetPolygon(pairAABB.AABBLeft->polygonIndex),
-//			world->GetPolygon(pairAABB.AABBRight->polygonIndex)));
-//}
+	aabb.MinX = point.x;
+	aabb.MaxX = point.x;
+	aabb.MinY = point.y;
+	aabb.MaxY = point.y;
+
+	for (size_t i = 1; i < polygon->points.size(); ++i)
+	{
+		Vec2 point = polygon->TransformPoint(polygon->points[i]);
+
+		if (point.x < aabb.MinX)
+			aabb.MinX = point.x;
+		else if (point.x > aabb.MaxX)
+			aabb.MaxX = point.x;
+
+		if (point.y < aabb.MinY)
+			aabb.MinY = point.y;
+		else if (point.y > aabb.MaxY)
+			aabb.MaxY = point.y;
+	}
+
+	return aabb;
+}
